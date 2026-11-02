@@ -1,0 +1,158 @@
+{
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "4+1 · Escenario: un pedido de punta a punta",
+  "subtitle": "El \"+1\": un caso de uso que atraviesa las otras cuatro vistas y sirve para validarlas.",
+  "animation": "trace",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/v41-escenarios.html"
+ },
+ "lanes": [
+  {
+   "id": "cliente",
+   "label": "Cliente"
+  },
+  {
+   "id": "pedidos",
+   "label": "order-module"
+  },
+  {
+   "id": "catalogo",
+   "label": "catalog-module"
+  },
+  {
+   "id": "pagos",
+   "label": "payment-module"
+  },
+  {
+   "id": "entregas",
+   "label": "delivery-module"
+  },
+  {
+   "id": "repartidor",
+   "label": "Repartidor"
+  }
+ ],
+ "phases": [
+  {
+   "id": "p1",
+   "label": "Comprar",
+   "fromCol": 0,
+   "toCol": 2
+  },
+  {
+   "id": "p2",
+   "label": "Preparar",
+   "fromCol": 3,
+   "toCol": 3,
+   "variant": "emphasis"
+  },
+  {
+   "id": "p3",
+   "label": "Entregar",
+   "fromCol": 4,
+   "toCol": 5,
+   "variant": "dashed"
+  }
+ ],
+ "mainPath": [
+  "carrito",
+  "reserva",
+  "cobro",
+  "listo",
+  "toma",
+  "camino",
+  "entregado"
+ ],
+ "nodes": [
+  {
+   "id": "carrito",
+   "lane": "cliente",
+   "col": 0,
+   "type": "frontend",
+   "label": "Carrito",
+   "sublabel": "pedidos · FUN-001"
+  },
+  {
+   "id": "reserva",
+   "lane": "catalogo",
+   "col": 1,
+   "type": "backend",
+   "label": "Reserva stock",
+   "sublabel": "D-09"
+  },
+  {
+   "id": "cobro",
+   "lane": "pagos",
+   "col": 2,
+   "type": "backend",
+   "label": "Cobra",
+   "sublabel": "D-04"
+  },
+  {
+   "id": "listo",
+   "lane": "pedidos",
+   "col": 3,
+   "type": "backend",
+   "label": "Listo",
+   "sublabel": "comercio · D-08"
+  },
+  {
+   "id": "toma",
+   "lane": "entregas",
+   "col": 4,
+   "type": "backend",
+   "label": "Asignada",
+   "sublabel": "exclusiva"
+  },
+  {
+   "id": "camino",
+   "lane": "repartidor",
+   "col": 5,
+   "type": "external",
+   "label": "En camino",
+   "sublabel": "D-01"
+  },
+  {
+   "id": "entregado",
+   "lane": "entregas",
+   "col": 5,
+   "type": "database",
+   "label": "Entregado",
+   "sublabel": "código · D-02"
+  }
+ ],
+ "edges": [
+  {
+   "from": "carrito",
+   "to": "reserva",
+   "label": "CatalogService"
+  },
+  {
+   "from": "reserva",
+   "to": "cobro",
+   "label": "PaymentService"
+  },
+  {
+   "from": "cobro",
+   "to": "listo"
+  },
+  {
+   "from": "listo",
+   "to": "toma",
+   "label": "OrderService.findReadyForDelivery"
+  },
+  {
+   "from": "toma",
+   "to": "camino",
+   "label": "markOnTheWay"
+  },
+  {
+   "from": "camino",
+   "to": "entregado",
+   "label": "markDelivered"
+  }
+ ],
+ "schema_version": 1
+}

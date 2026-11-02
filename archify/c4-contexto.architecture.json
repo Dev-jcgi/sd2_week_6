@@ -1,0 +1,208 @@
+{
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "C4 · Nivel 1 · Contexto del Delivery System",
+  "subtitle": "Quién usa el sistema y con qué sistemas externos habla. Sin tecnología: lo entiende cualquiera.",
+  "views": [
+   {
+    "id": "v1",
+    "label": "1 · Personas",
+    "focus": [
+     "cliente",
+     "comercio",
+     "repartidor",
+     "admin"
+    ],
+    "note": "Los cuatro roles de UserRole: CUSTOMER, MERCHANT, COURIER y ADMIN."
+   },
+   {
+    "id": "v2",
+    "label": "2 · El sistema",
+    "focus": [
+     "sistema"
+    ],
+    "note": "Una sola caja: todavía no importa cómo está construido por dentro."
+   },
+   {
+    "id": "v3",
+    "label": "3 · Sistemas externos",
+    "focus": [
+     "pasarela",
+     "correo"
+    ],
+    "note": "En el capstone los pagos son simulados; el correo es una mejora futura."
+   }
+  ],
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/c4-contexto.html"
+ },
+ "components": [
+  {
+   "id": "cliente",
+   "type": "external",
+   "label": "Cliente",
+   "sublabel": "persona · CUSTOMER",
+   "pos": [
+    40,
+    40
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "comercio",
+   "type": "external",
+   "label": "Comercio",
+   "sublabel": "persona · MERCHANT",
+   "pos": [
+    40,
+    190
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "repartidor",
+   "type": "external",
+   "label": "Repartidor",
+   "sublabel": "persona · COURIER",
+   "pos": [
+    40,
+    340
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "admin",
+   "type": "external",
+   "label": "Administrador",
+   "sublabel": "persona · ADMIN",
+   "pos": [
+    40,
+    490
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "sistema",
+   "type": "backend",
+   "label": "Delivery System",
+   "sublabel": "comercios, pedidos, pagos y entregas",
+   "pos": [
+    430,
+    250
+   ],
+   "size": [
+    230,
+    96
+   ]
+  },
+  {
+   "id": "pasarela",
+   "type": "external",
+   "label": "Pasarela de pagos",
+   "sublabel": "simulada (PaymentService)",
+   "pos": [
+    820,
+    170
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "correo",
+   "type": "external",
+   "label": "Servicio de correo",
+   "sublabel": "futuro · notificaciones",
+   "pos": [
+    820,
+    360
+   ],
+   "size": [
+    170,
+    72
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Alcance del capstone",
+   "wraps": [
+    "sistema"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "cliente",
+   "to": "sistema",
+   "label": "arma carrito, paga y sigue su pedido",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "comercio",
+   "to": "sistema",
+   "label": "publica catálogo y marca pedidos listos"
+  },
+  {
+   "id": "c3",
+   "from": "repartidor",
+   "to": "sistema",
+   "label": "toma pedidos y confirma entregas"
+  },
+  {
+   "id": "c4",
+   "from": "admin",
+   "to": "sistema",
+   "label": "gestiona usuarios y comercios"
+  },
+  {
+   "id": "c5",
+   "from": "sistema",
+   "to": "pasarela",
+   "label": "cobra el pedido",
+   "variant": "dashed"
+  },
+  {
+   "id": "c6",
+   "from": "sistema",
+   "to": "correo",
+   "label": "avisa cambios",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Nivel 1 · Contexto",
+   "items": [
+    "Personas y sistemas, no tecnologías",
+    "Público: todos, incluido el cliente del proyecto"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Pregunta que responde",
+   "items": [
+    "¿Qué hace el sistema y para quién?"
+   ]
+  }
+ ],
+ "schema_version": 1
+}

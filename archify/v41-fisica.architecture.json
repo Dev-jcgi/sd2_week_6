@@ -1,0 +1,189 @@
+{
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "4+1 · Vista física",
+  "subtitle": "Dónde corre cada pieza: la PC del usuario, Docker para MySQL y GitLab para integrar el trabajo de los equipos.",
+  "views": [
+   {
+    "id": "v1",
+    "label": "1 · Ejecución",
+    "focus": [
+     "jvm",
+     "mysql"
+    ],
+    "note": "Un solo proceso JVM; MySQL en un contenedor Docker solo si se usa el perfil jpa."
+   },
+   {
+    "id": "v2",
+    "label": "2 · Integración continua",
+    "focus": [
+     "dev",
+     "gitlab",
+     "ci"
+    ],
+    "note": "Cada MR dispara el pipeline; main está protegida (GitHub Flow)."
+   }
+  ],
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/v41-fisica.html"
+ },
+ "components": [
+  {
+   "id": "usuario",
+   "type": "external",
+   "label": "Usuario",
+   "sublabel": "administra, vende, pide o reparte",
+   "pos": [
+    30,
+    240
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "jvm",
+   "type": "frontend",
+   "label": "JVM 25 · delivery-system",
+   "sublabel": "./mvnw javafx:run -Pmemory",
+   "pos": [
+    290,
+    240
+   ],
+   "size": [
+    220,
+    84
+   ],
+   "brand": "spring"
+  },
+  {
+   "id": "mysql",
+   "type": "database",
+   "label": "Contenedor MySQL 8.4",
+   "sublabel": "docker compose up -d",
+   "pos": [
+    640,
+    180
+   ],
+   "size": [
+    200,
+    72
+   ],
+   "brand": "mysql"
+  },
+  {
+   "id": "vol",
+   "type": "database",
+   "label": "Volumen de datos",
+   "sublabel": "delivery-system-mysql-data",
+   "pos": [
+    640,
+    330
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "dev",
+   "type": "external",
+   "label": "Developer",
+   "sublabel": "rama FEAT-n",
+   "pos": [
+    290,
+    520
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "gitlab",
+   "type": "cloud",
+   "label": "GitLab · repo capstone",
+   "sublabel": "main protegida · MR",
+   "pos": [
+    560,
+    520
+   ],
+   "size": [
+    200,
+    72
+   ],
+   "brand": "gitlab"
+  },
+  {
+   "id": "ci",
+   "type": "cloud",
+   "label": "Pipeline CI",
+   "sublabel": ".gitlab-ci.yml · mvn verify",
+   "pos": [
+    860,
+    520
+   ],
+   "size": [
+    190,
+    72
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "PC del usuario / laboratorio",
+   "wraps": [
+    "jvm",
+    "mysql",
+    "vol"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Docker",
+   "wraps": [
+    "mysql",
+    "vol"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "usuario",
+   "to": "jvm",
+   "label": "pantalla y teclado",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "jvm",
+   "to": "mysql",
+   "label": "JDBC localhost:3306",
+   "variant": "dashed"
+  },
+  {
+   "id": "c3",
+   "from": "mysql",
+   "to": "vol",
+   "label": "persiste"
+  },
+  {
+   "id": "c4",
+   "from": "dev",
+   "to": "gitlab",
+   "label": "git push · merge request",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c5",
+   "from": "gitlab",
+   "to": "ci",
+   "label": "dispara pipeline"
+  }
+ ],
+ "schema_version": 1
+}

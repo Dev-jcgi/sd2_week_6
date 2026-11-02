@@ -1,0 +1,129 @@
+{
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "Observer en acción: desactivar al repartidor de prueba",
+  "subtitle": "El caso de uso no sabe quién escucha; el bus avisa a cada listener suscrito en UserModule.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/observer-secuencia.html"
+ },
+ "participants": [
+  {
+   "id": "ui",
+   "type": "frontend",
+   "label": "Administrador",
+   "sublabel": "EditUserController"
+  },
+  {
+   "id": "uc",
+   "type": "backend",
+   "label": "UpdateUser",
+   "sublabel": "caso de uso"
+  },
+  {
+   "id": "user",
+   "type": "backend",
+   "label": "User",
+   "sublabel": "agregado"
+  },
+  {
+   "id": "repo",
+   "type": "database",
+   "label": "Repositorio",
+   "sublabel": "puerto"
+  },
+  {
+   "id": "bus",
+   "type": "messagebus",
+   "label": "UserEventBus",
+   "sublabel": "Subject"
+  },
+  {
+   "id": "mail",
+   "type": "external",
+   "label": "EmailListener",
+   "sublabel": "Observer"
+  },
+  {
+   "id": "audit",
+   "type": "external",
+   "label": "AuditListener",
+   "sublabel": "Observer"
+  },
+  {
+   "id": "cour",
+   "type": "external",
+   "label": "CourierListener",
+   "sublabel": "Observer"
+  }
+ ],
+ "segments": [
+  {
+   "from": 150,
+   "to": 320,
+   "label": "Cambiar el estado"
+  },
+  {
+   "from": 336,
+   "to": 560,
+   "label": "Avisar a los interesados"
+  }
+ ],
+ "messages": [
+  {
+   "from": "ui",
+   "to": "uc",
+   "y": 180,
+   "label": "execute(status = INACTIVE)",
+   "variant": "emphasis"
+  },
+  {
+   "from": "uc",
+   "to": "user",
+   "y": 222,
+   "label": "deactivate() → anota UserDeactivated"
+  },
+  {
+   "from": "uc",
+   "to": "repo",
+   "y": 264,
+   "label": "save(user)"
+  },
+  {
+   "from": "uc",
+   "to": "bus",
+   "y": 366,
+   "label": "publishAll(user.pullEvents())",
+   "variant": "emphasis"
+  },
+  {
+   "from": "bus",
+   "to": "mail",
+   "y": 408,
+   "label": "on(UserDeactivated) → correo",
+   "variant": "dashed"
+  },
+  {
+   "from": "bus",
+   "to": "audit",
+   "y": 450,
+   "label": "on(…) → USER_DEACTIVATED",
+   "variant": "dashed"
+  },
+  {
+   "from": "bus",
+   "to": "cour",
+   "y": 492,
+   "label": "on(…) → role = COURIER: libera entregas",
+   "variant": "dashed"
+  },
+  {
+   "from": "uc",
+   "to": "ui",
+   "y": 534,
+   "label": "listo",
+   "variant": "return"
+  }
+ ],
+ "schema_version": 1
+}

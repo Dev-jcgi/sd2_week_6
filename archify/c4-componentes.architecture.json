@@ -1,0 +1,238 @@
+{
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "C4 · Nivel 3 · Componentes de la aplicación",
+  "subtitle": "Cada módulo Maven es un componente. Todos dependen solo de core-module y se hablan por contratos.",
+  "views": [
+   {
+    "id": "v1",
+    "label": "1 · El núcleo",
+    "focus": [
+     "core"
+    ],
+    "note": "core-module: contratos (UserService, CatalogService, OrderService, PaymentService), fallbacks y la UI base."
+   },
+   {
+    "id": "v2",
+    "label": "2 · Quién implementa qué",
+    "focus": [
+     "user",
+     "catalog",
+     "order",
+     "payment",
+     "core"
+    ],
+    "note": "Cada equipo implementa su contrato; si aún no lo hace, core registra un fallback y avisa con WARN."
+   },
+   {
+    "id": "v3",
+    "label": "3 · Entregas usa pedidos",
+    "focus": [
+     "delivery",
+     "core",
+     "order"
+    ],
+    "note": "delivery-module solo ve OrderService, nunca las clases internas de order-module (D-00)."
+   }
+  ],
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/c4-componentes.html"
+ },
+ "components": [
+  {
+   "id": "shell",
+   "type": "frontend",
+   "label": "delivery-system",
+   "sublabel": "arranque Spring + JavaFX",
+   "pos": [
+    440,
+    60
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "core",
+   "type": "backend",
+   "label": "core-module",
+   "sublabel": "contratos · fallbacks · UI base",
+   "pos": [
+    440,
+    290
+   ],
+   "size": [
+    200,
+    84
+   ]
+  },
+  {
+   "id": "user",
+   "type": "backend",
+   "label": "user-module",
+   "sublabel": "usuarios · practitioner",
+   "pos": [
+    60,
+    150
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "catalog",
+   "type": "backend",
+   "label": "catalog-module",
+   "sublabel": "comercios y catálogo · equipo C",
+   "pos": [
+    60,
+    320
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "order",
+   "type": "backend",
+   "label": "order-module",
+   "sublabel": "carrito y pedidos · equipo B",
+   "pos": [
+    60,
+    490
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "payment",
+   "type": "backend",
+   "label": "payment-module",
+   "sublabel": "pagos · equipo D",
+   "pos": [
+    830,
+    150
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "delivery",
+   "type": "backend",
+   "label": "delivery-module",
+   "sublabel": "repartidores y entregas · equipo A",
+   "pos": [
+    830,
+    370
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "db",
+   "type": "database",
+   "label": "Persistencia",
+   "sublabel": "memoria o MySQL",
+   "pos": [
+    830,
+    540
+   ],
+   "size": [
+    170,
+    72
+   ],
+   "brand": "mysql"
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Aplicación de escritorio (contenedor)",
+   "wraps": [
+    "shell",
+    "core",
+    "user",
+    "catalog",
+    "order",
+    "payment",
+    "delivery"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "shell",
+   "to": "core",
+   "label": "ensambla módulos"
+  },
+  {
+   "id": "c2",
+   "from": "user",
+   "to": "core",
+   "label": "implementa UserService",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c3",
+   "from": "catalog",
+   "to": "core",
+   "label": "implementa CatalogService"
+  },
+  {
+   "id": "c4",
+   "from": "order",
+   "to": "core",
+   "label": "implementa OrderService · usa Catalog/Payment/User"
+  },
+  {
+   "id": "c5",
+   "from": "payment",
+   "to": "core",
+   "label": "implementa PaymentService"
+  },
+  {
+   "id": "c6",
+   "from": "delivery",
+   "to": "core",
+   "label": "usa OrderService · UserService",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c7",
+   "from": "core",
+   "to": "db",
+   "label": "CrudRepositoryPort",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Regla de dependencias",
+   "items": [
+    "Cada módulo depende SOLO de core-module",
+    "Entre módulos viajan UUID y records"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Decisión D-00",
+   "items": [
+    "Contratos en org.jala.edu.core.contract",
+    "Fallback con datos de prueba + WARN"
+   ]
+  }
+ ],
+ "schema_version": 1
+}

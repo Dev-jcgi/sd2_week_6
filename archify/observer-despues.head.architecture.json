@@ -1,0 +1,211 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Observer · después",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/observer-despues.html"
+ },
+ "components": [
+  {
+   "id": "ui",
+   "type": "frontend",
+   "label": "EditUserController",
+   "sublabel": "UI JavaFX",
+   "pos": [
+    40,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "uc",
+   "type": "backend",
+   "label": "UpdateUserUseCase",
+   "sublabel": "2 dependencias",
+   "pos": [
+    300,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "repo",
+   "type": "database",
+   "label": "UserRepositoryPort",
+   "sublabel": "memoria / MySQL",
+   "pos": [
+    300,
+    420
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "bus",
+   "type": "messagebus",
+   "label": "InMemoryUserEventBus",
+   "sublabel": "Subject",
+   "pos": [
+    560,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "lmail",
+   "type": "backend",
+   "label": "WelcomeEmailListener",
+   "sublabel": "Observer",
+   "pos": [
+    820,
+    60
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "laudit",
+   "type": "backend",
+   "label": "AuditLogListener",
+   "sublabel": "Observer",
+   "pos": [
+    820,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "lcour",
+   "type": "backend",
+   "label": "CourierReleaseListener",
+   "sublabel": "Observer",
+   "pos": [
+    820,
+    380
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "mail",
+   "type": "external",
+   "label": "EmailNotifier",
+   "sublabel": "correo",
+   "pos": [
+    1080,
+    60
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "audit",
+   "type": "external",
+   "label": "AuditLog",
+   "sublabel": "auditoría",
+   "pos": [
+    1080,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "cour",
+   "type": "external",
+   "label": "CourierAssignmentReleaser",
+   "sublabel": "entregas",
+   "pos": [
+    1080,
+    380
+   ],
+   "size": [
+    200,
+    72
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "ui",
+   "to": "uc",
+   "label": "execute"
+  },
+  {
+   "id": "c2",
+   "from": "uc",
+   "to": "repo",
+   "label": "save"
+  },
+  {
+   "id": "c6",
+   "from": "uc",
+   "to": "bus",
+   "label": "publishAll"
+  },
+  {
+   "id": "c7",
+   "from": "bus",
+   "to": "lmail",
+   "label": "on",
+   "variant": "dashed"
+  },
+  {
+   "id": "c8",
+   "from": "bus",
+   "to": "laudit",
+   "label": "on",
+   "variant": "dashed"
+  },
+  {
+   "id": "c9",
+   "from": "bus",
+   "to": "lcour",
+   "label": "on",
+   "variant": "dashed"
+  },
+  {
+   "id": "c3",
+   "from": "lmail",
+   "to": "mail",
+   "label": "sendDeactivated"
+  },
+  {
+   "id": "c4",
+   "from": "laudit",
+   "to": "audit",
+   "label": "record"
+  },
+  {
+   "id": "c5",
+   "from": "lcour",
+   "to": "cour",
+   "label": "release"
+  }
+ ]
+}

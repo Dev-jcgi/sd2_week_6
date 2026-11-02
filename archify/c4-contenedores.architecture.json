@@ -1,0 +1,202 @@
+{
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "C4 · Nivel 2 · Contenedores",
+  "subtitle": "Lo que se ejecuta o guarda datos. Un contenedor C4 NO es un contenedor de Docker.",
+  "views": [
+   {
+    "id": "v1",
+    "label": "1 · La aplicación",
+    "focus": [
+     "app"
+    ],
+    "note": "Un solo ejecutable: delivery-system arma todos los módulos (monolito modular)."
+   },
+   {
+    "id": "v2",
+    "label": "2 · Persistencia",
+    "focus": [
+     "memoria",
+     "mysql"
+    ],
+    "note": "Memoria por defecto (-Pmemory); MySQL opcional con Docker Compose."
+   }
+  ],
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/c4-contenedores.html"
+ },
+ "components": [
+  {
+   "id": "cliente",
+   "type": "external",
+   "label": "Cliente",
+   "sublabel": "CUSTOMER",
+   "pos": [
+    40,
+    60
+   ],
+   "size": [
+    150,
+    72
+   ]
+  },
+  {
+   "id": "comercio",
+   "type": "external",
+   "label": "Comercio",
+   "sublabel": "MERCHANT",
+   "pos": [
+    40,
+    190
+   ],
+   "size": [
+    150,
+    72
+   ]
+  },
+  {
+   "id": "repartidor",
+   "type": "external",
+   "label": "Repartidor",
+   "sublabel": "COURIER",
+   "pos": [
+    40,
+    320
+   ],
+   "size": [
+    150,
+    72
+   ]
+  },
+  {
+   "id": "admin",
+   "type": "external",
+   "label": "Administrador",
+   "sublabel": "ADMIN",
+   "pos": [
+    40,
+    450
+   ],
+   "size": [
+    150,
+    72
+   ]
+  },
+  {
+   "id": "app",
+   "type": "frontend",
+   "label": "Aplicación de escritorio",
+   "sublabel": "Java 25 · Spring Boot 4.1 · JavaFX 25",
+   "pos": [
+    380,
+    230
+   ],
+   "size": [
+    240,
+    96
+   ],
+   "brand": "spring"
+  },
+  {
+   "id": "memoria",
+   "type": "database",
+   "label": "Almacén en memoria",
+   "sublabel": "perfil memory · predeterminado",
+   "pos": [
+    760,
+    120
+   ],
+   "size": [
+    210,
+    72
+   ]
+  },
+  {
+   "id": "mysql",
+   "type": "database",
+   "label": "Base de datos MySQL 8.4",
+   "sublabel": "perfil jpa · Docker Compose",
+   "pos": [
+    760,
+    360
+   ],
+   "size": [
+    210,
+    72
+   ],
+   "brand": "mysql"
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Delivery System",
+   "wraps": [
+    "app",
+    "memoria",
+    "mysql"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "cliente",
+   "to": "app",
+   "label": "GUI JavaFX",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "comercio",
+   "to": "app",
+   "label": "GUI JavaFX"
+  },
+  {
+   "id": "c3",
+   "from": "repartidor",
+   "to": "app",
+   "label": "GUI JavaFX"
+  },
+  {
+   "id": "c4",
+   "from": "admin",
+   "to": "app",
+   "label": "GUI JavaFX"
+  },
+  {
+   "id": "c5",
+   "from": "app",
+   "to": "memoria",
+   "label": "lee y escribe (Map en RAM)",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c6",
+   "from": "app",
+   "to": "mysql",
+   "label": "JPA / JDBC :3306",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Contenedor (C4)",
+   "items": [
+    "Aplicación o almacén de datos",
+    "Límite de ejecución: proceso o base"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "No confundir",
+   "items": [
+    "Contenedor C4 ≠ Docker",
+    "Un módulo Maven NO es contenedor: es componente"
+   ]
+  }
+ ],
+ "schema_version": 1
+}

@@ -1,0 +1,281 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "C4 · Nivel 3 · payment-module (Equipo D)",
+  "subtitle": "Plantilla del taller: cambia cada TODO por los nombres reales de su código y agrega lo que falte.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/taller/equipo-d.html"
+ },
+ "components": [
+  {
+   "id": "actor",
+   "type": "external",
+   "label": "Cliente",
+   "sublabel": "persona · CUSTOMER",
+   "pos": [
+    20,
+    100
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "otros",
+   "type": "external",
+   "label": "Otros módulos",
+   "sublabel": "usan tu contrato",
+   "pos": [
+    20,
+    360
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "ui",
+   "type": "frontend",
+   "label": "Controladores JavaFX",
+   "sublabel": "TODO: nombres reales",
+   "pos": [
+    250,
+    100
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "adapter",
+   "type": "backend",
+   "label": "PaymentServiceAdapter",
+   "sublabel": "implementa PaymentService",
+   "pos": [
+    250,
+    360
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "uc1",
+   "type": "backend",
+   "label": "Registrar método de pago",
+   "sublabel": "caso de uso · TODO: clase",
+   "pos": [
+    520,
+    60
+   ],
+   "size": [
+    250,
+    72
+   ]
+  },
+  {
+   "id": "uc2",
+   "type": "backend",
+   "label": "Pagar pedido simulado (D-04)",
+   "sublabel": "caso de uso · TODO: clase",
+   "pos": [
+    520,
+    180
+   ],
+   "size": [
+    250,
+    72
+   ]
+  },
+  {
+   "id": "uc3",
+   "type": "backend",
+   "label": "Consultar historial sin doble cobro",
+   "sublabel": "caso de uso · TODO: clase",
+   "pos": [
+    520,
+    300
+   ],
+   "size": [
+    250,
+    72
+   ]
+  },
+  {
+   "id": "uc4",
+   "type": "backend",
+   "label": "Aplicar cupón (opcional, D-03)",
+   "sublabel": "caso de uso · TODO: clase",
+   "pos": [
+    520,
+    420
+   ],
+   "size": [
+    250,
+    72
+   ]
+  },
+  {
+   "id": "dominio",
+   "type": "backend",
+   "label": "Dominio",
+   "sublabel": "TODO: agregados y objetos valor",
+   "pos": [
+    840,
+    180
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "puerto",
+   "type": "backend",
+   "label": "Puerto de repositorio",
+   "sublabel": "TODO: nombre del puerto",
+   "pos": [
+    840,
+    370
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "mem",
+   "type": "database",
+   "label": "Adaptador en memoria",
+   "sublabel": "perfil memory",
+   "pos": [
+    840,
+    540
+   ],
+   "size": [
+    200,
+    72
+   ]
+  },
+  {
+   "id": "usa1",
+   "type": "external",
+   "label": "UserService",
+   "sublabel": "contrato de core-module",
+   "pos": [
+    1120,
+    100
+   ],
+   "size": [
+    190,
+    72
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Adaptadores de entrada",
+   "wraps": [
+    "ui",
+    "adapter"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Aplicación · casos de uso",
+   "wraps": [
+    "uc1",
+    "uc2",
+    "uc3",
+    "uc4"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Dominio y puertos",
+   "wraps": [
+    "dominio",
+    "puerto"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "actor",
+   "to": "ui",
+   "label": "usa la pantalla"
+  },
+  {
+   "id": "c2",
+   "from": "otros",
+   "to": "adapter",
+   "label": "llama al contrato"
+  },
+  {
+   "id": "c3",
+   "from": "ui",
+   "to": "uc1",
+   "label": "comando"
+  },
+  {
+   "id": "c4",
+   "from": "ui",
+   "to": "uc2"
+  },
+  {
+   "id": "c5",
+   "from": "ui",
+   "to": "uc3"
+  },
+  {
+   "id": "c6",
+   "from": "ui",
+   "to": "uc4"
+  },
+  {
+   "id": "c7",
+   "from": "uc1",
+   "to": "dominio",
+   "label": "reglas"
+  },
+  {
+   "id": "c8",
+   "from": "uc2",
+   "to": "puerto",
+   "label": "save"
+  },
+  {
+   "id": "c9",
+   "from": "mem",
+   "to": "puerto",
+   "label": "implementa",
+   "variant": "dashed"
+  },
+  {
+   "id": "c10",
+   "from": "uc1",
+   "to": "usa1",
+   "label": "usa",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "amber",
+   "title": "Checklist",
+   "items": [
+    "Título con nivel y módulo",
+    "Cada flecha con verbo",
+    "Contratos que implementan y que usan"
+   ]
+  }
+ ]
+}

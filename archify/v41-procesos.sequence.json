@@ -1,0 +1,134 @@
+{
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "4+1 · Vista de procesos: el cliente confirma un pedido",
+  "subtitle": "Llamadas síncronas dentro del mismo proceso (monolito). La UI de JavaFX no se bloquea: el caso de uso corre con BackgroundTasks.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/v41-procesos.html"
+ },
+ "participants": [
+  {
+   "id": "ui",
+   "type": "frontend",
+   "label": "UI JavaFX",
+   "sublabel": "hilo de la interfaz"
+  },
+  {
+   "id": "bg",
+   "type": "backend",
+   "label": "BackgroundTasks",
+   "sublabel": "core-module"
+  },
+  {
+   "id": "ord",
+   "type": "backend",
+   "label": "order-module",
+   "sublabel": "caso de uso"
+  },
+  {
+   "id": "usr",
+   "type": "backend",
+   "label": "UserService",
+   "sublabel": "contrato"
+  },
+  {
+   "id": "cat",
+   "type": "backend",
+   "label": "CatalogService",
+   "sublabel": "contrato"
+  },
+  {
+   "id": "pay",
+   "type": "backend",
+   "label": "PaymentService",
+   "sublabel": "contrato"
+  },
+  {
+   "id": "db",
+   "type": "database",
+   "label": "Repositorio",
+   "sublabel": "memoria / MySQL"
+  }
+ ],
+ "segments": [
+  {
+   "from": 150,
+   "to": 300,
+   "label": "Validar"
+  },
+  {
+   "from": 316,
+   "to": 470,
+   "label": "Reservar y cobrar"
+  },
+  {
+   "from": 486,
+   "to": 620,
+   "label": "Guardar y responder"
+  }
+ ],
+ "messages": [
+  {
+   "from": "ui",
+   "to": "bg",
+   "y": 180,
+   "label": "run(confirmarPedido)",
+   "variant": "emphasis"
+  },
+  {
+   "from": "bg",
+   "to": "ord",
+   "y": 222,
+   "label": "execute(command)",
+   "variant": "emphasis"
+  },
+  {
+   "from": "ord",
+   "to": "usr",
+   "y": 264,
+   "label": "isActiveWithRole(id, CUSTOMER)  (D-07)"
+  },
+  {
+   "from": "ord",
+   "to": "cat",
+   "y": 346,
+   "label": "isAvailable · reserveStock  (D-09)"
+  },
+  {
+   "from": "ord",
+   "to": "pay",
+   "y": 388,
+   "label": "pay(orderId, userId, total)  (D-04)"
+  },
+  {
+   "from": "pay",
+   "to": "ord",
+   "y": 430,
+   "label": "PaymentResult",
+   "variant": "return"
+  },
+  {
+   "from": "ord",
+   "to": "db",
+   "y": 512,
+   "label": "save(order) · estado Creado",
+   "variant": "emphasis"
+  },
+  {
+   "from": "ord",
+   "to": "bg",
+   "y": 554,
+   "label": "orderId",
+   "variant": "return"
+  },
+  {
+   "from": "bg",
+   "to": "ui",
+   "y": 596,
+   "label": "Platform.runLater → actualizar vista",
+   "variant": "return"
+  }
+ ],
+ "schema_version": 1
+}

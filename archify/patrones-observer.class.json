@@ -1,0 +1,207 @@
+{
+ "diagram_type": "class",
+ "meta": {
+  "title": "Ejercicio · DESPUÉS: Observer",
+  "subtitle": "El caso de uso publica eventos; los interesados se suscriben. Nuevo interesado = nuevo listener, sin tocar el caso de uso.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/patrones-observer.html"
+ },
+ "layout": {
+  "mode": "grid"
+ },
+ "types": [
+  {
+   "id": "update",
+   "label": "UpdateUserUseCase",
+   "kind": "class",
+   "row": 0,
+   "col": 0,
+   "sublabel": "2 dependencias",
+   "attributes": [
+    {
+     "name": "userRepository",
+     "type": "UserRepositoryPort",
+     "visibility": "private"
+    },
+    {
+     "name": "eventPublisher",
+     "type": "UserEventPublisher",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "command",
+     "returns": "Void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "pub",
+   "label": "UserEventPublisher",
+   "kind": "interface",
+   "row": 0,
+   "col": 1.5,
+   "sublabel": "puerto · Subject",
+   "methods": [
+    {
+     "name": "publish",
+     "parameters": "event: UserEvent",
+     "returns": "void",
+     "visibility": "public",
+     "abstract": true
+    }
+   ]
+  },
+  {
+   "id": "event",
+   "label": "UserEvent",
+   "kind": "interface",
+   "row": 0,
+   "col": 3,
+   "sublabel": "sealed · evento de dominio",
+   "methods": [
+    {
+     "name": "userId",
+     "parameters": "",
+     "returns": "UserId",
+     "visibility": "public",
+     "abstract": true
+    }
+   ]
+  },
+  {
+   "id": "bus",
+   "label": "InMemoryUserEventBus",
+   "kind": "class",
+   "row": 1,
+   "col": 1.5,
+   "sublabel": "Subject concreto",
+   "attributes": [
+    {
+     "name": "listeners",
+     "type": "List<UserEventListener>",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "subscribe",
+     "parameters": "listener",
+     "returns": "void",
+     "visibility": "public"
+    },
+    {
+     "name": "publish",
+     "parameters": "event",
+     "returns": "void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "listener",
+   "label": "UserEventListener",
+   "kind": "interface",
+   "row": 2,
+   "col": 1.5,
+   "sublabel": "Observer",
+   "methods": [
+    {
+     "name": "on",
+     "parameters": "event: UserEvent",
+     "returns": "void",
+     "visibility": "public",
+     "abstract": true
+    }
+   ]
+  },
+  {
+   "id": "reg",
+   "label": "UserRegistered",
+   "kind": "record",
+   "row": 1,
+   "col": 3,
+   "sublabel": "evento"
+  },
+  {
+   "id": "deact",
+   "label": "UserDeactivated",
+   "kind": "record",
+   "row": 2,
+   "col": 3,
+   "sublabel": "evento · trae el rol"
+  },
+  {
+   "id": "mail",
+   "label": "WelcomeEmailListener",
+   "kind": "class",
+   "row": 3,
+   "col": 0,
+   "sublabel": "correo"
+  },
+  {
+   "id": "audit",
+   "label": "AuditLogListener",
+   "kind": "class",
+   "row": 3,
+   "col": 1.5,
+   "sublabel": "auditoría"
+  },
+  {
+   "id": "courier",
+   "label": "CourierReleaseListener",
+   "kind": "class",
+   "row": 3,
+   "col": 3,
+   "sublabel": "libera entregas del COURIER"
+  }
+ ],
+ "relationships": [
+  {
+   "from": "update",
+   "to": "pub",
+   "kind": "dependency"
+  },
+  {
+   "from": "bus",
+   "to": "pub",
+   "kind": "realization"
+  },
+  {
+   "from": "bus",
+   "to": "listener",
+   "kind": "aggregation",
+   "label": "avisa a todos"
+  },
+  {
+   "from": "mail",
+   "to": "listener",
+   "kind": "realization"
+  },
+  {
+   "from": "audit",
+   "to": "listener",
+   "kind": "realization"
+  },
+  {
+   "from": "courier",
+   "to": "listener",
+   "kind": "realization"
+  },
+  {
+   "from": "reg",
+   "to": "event",
+   "kind": "realization"
+  },
+  {
+   "from": "deact",
+   "to": "event",
+   "kind": "realization"
+  }
+ ],
+ "schema_version": 1
+}

@@ -1,0 +1,282 @@
+{
+ "diagram_type": "class",
+ "meta": {
+  "title": "C4 · Nivel 4 · Código del agregado User",
+  "subtitle": "El nivel más detallado: clases reales de user-module y core-module. Opcional en C4: se genera desde el IDE cuando hace falta.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/c4-codigo.html"
+ },
+ "layout": {
+  "mode": "grid"
+ },
+ "types": [
+  {
+   "id": "base",
+   "label": "BaseModel<ID>",
+   "kind": "abstract",
+   "row": 0,
+   "col": 0,
+   "sublabel": "core-module · identidad y fechas",
+   "attributes": [
+    {
+     "name": "id",
+     "type": "ID",
+     "visibility": "private"
+    },
+    {
+     "name": "createdAt",
+     "type": "Instant",
+     "visibility": "private"
+    },
+    {
+     "name": "updatedAt",
+     "type": "Instant",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "touch",
+     "parameters": "",
+     "returns": "void",
+     "visibility": "protected"
+    }
+   ]
+  },
+  {
+   "id": "usecase",
+   "label": "UseCase<I, O>",
+   "kind": "interface",
+   "row": 0,
+   "col": 1.5,
+   "sublabel": "core-module",
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "input: I",
+     "returns": "O",
+     "visibility": "public",
+     "abstract": true
+    }
+   ]
+  },
+  {
+   "id": "crud",
+   "label": "CrudRepositoryPort<T, ID>",
+   "kind": "interface",
+   "row": 0,
+   "col": 3,
+   "sublabel": "core-module",
+   "methods": [
+    {
+     "name": "save",
+     "parameters": "model: T",
+     "returns": "T",
+     "visibility": "public"
+    },
+    {
+     "name": "findById",
+     "parameters": "id: ID",
+     "returns": "Optional<T>",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "user",
+   "label": "User",
+   "kind": "class",
+   "row": 1,
+   "col": 0,
+   "sublabel": "raíz del agregado",
+   "attributes": [
+    {
+     "name": "firstName",
+     "type": "String",
+     "visibility": "private"
+    },
+    {
+     "name": "email",
+     "type": "Email",
+     "visibility": "private"
+    },
+    {
+     "name": "role",
+     "type": "UserRole",
+     "visibility": "private"
+    },
+    {
+     "name": "status",
+     "type": "UserStatus",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "register",
+     "parameters": "firstName, lastName, email, phone, role",
+     "returns": "User",
+     "visibility": "public",
+     "static": true
+    },
+    {
+     "name": "restore",
+     "parameters": "9 parámetros",
+     "returns": "User",
+     "visibility": "public",
+     "static": true
+    },
+    {
+     "name": "deactivate",
+     "parameters": "",
+     "returns": "void",
+     "visibility": "public"
+    },
+    {
+     "name": "isActive",
+     "parameters": "",
+     "returns": "boolean",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "create",
+   "label": "CreateUserUseCase",
+   "kind": "class",
+   "row": 1,
+   "col": 1.5,
+   "sublabel": "un requerimiento = un caso de uso",
+   "attributes": [
+    {
+     "name": "userRepository",
+     "type": "UserRepositoryPort",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "command: CreateUserCommand",
+     "returns": "UUID",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "repo",
+   "label": "UserRepositoryPort",
+   "kind": "interface",
+   "row": 1,
+   "col": 3,
+   "sublabel": "puerto de salida",
+   "methods": [
+    {
+     "name": "existsByEmail",
+     "parameters": "email: Email",
+     "returns": "boolean",
+     "visibility": "public",
+     "abstract": true
+    }
+   ]
+  },
+  {
+   "id": "email",
+   "label": "Email",
+   "kind": "record",
+   "row": 2,
+   "col": 0,
+   "sublabel": "objeto valor: valida y normaliza",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "String",
+     "visibility": "private"
+    }
+   ]
+  },
+  {
+   "id": "role",
+   "label": "UserRole",
+   "kind": "enum",
+   "row": 2,
+   "col": 1,
+   "sublabel": "CUSTOMER · COURIER · ADMIN · MERCHANT"
+  },
+  {
+   "id": "status",
+   "label": "UserStatus",
+   "kind": "enum",
+   "row": 2,
+   "col": 2,
+   "sublabel": "ACTIVE · INACTIVE"
+  },
+  {
+   "id": "uid",
+   "label": "UserId",
+   "kind": "record",
+   "row": 2,
+   "col": 3,
+   "sublabel": "envuelve un UUID",
+   "attributes": [
+    {
+     "name": "value",
+     "type": "UUID",
+     "visibility": "private"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "from": "user",
+   "to": "base",
+   "kind": "inheritance"
+  },
+  {
+   "from": "create",
+   "to": "usecase",
+   "kind": "realization"
+  },
+  {
+   "from": "repo",
+   "to": "crud",
+   "kind": "inheritance"
+  },
+  {
+   "from": "create",
+   "to": "repo",
+   "kind": "association",
+   "label": "usa"
+  },
+  {
+   "from": "create",
+   "to": "user",
+   "kind": "dependency",
+   "label": "crea"
+  },
+  {
+   "from": "user",
+   "to": "email",
+   "kind": "composition"
+  },
+  {
+   "from": "user",
+   "to": "role",
+   "kind": "association"
+  },
+  {
+   "from": "user",
+   "to": "status",
+   "kind": "association"
+  },
+  {
+   "from": "user",
+   "to": "uid",
+   "kind": "composition",
+   "label": "id"
+  }
+ ],
+ "schema_version": 1
+}

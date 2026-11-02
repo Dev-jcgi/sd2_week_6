@@ -1,0 +1,111 @@
+{
+ "diagram_type": "class",
+ "meta": {
+  "title": "OOD · Inversión de dependencias en user-module",
+  "subtitle": "El caso de uso depende de una abstracción (puerto). Las implementaciones concretas dependen de esa misma abstracción.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/ood-dip.html"
+ },
+ "layout": {
+  "mode": "grid"
+ },
+ "types": [
+  {
+   "id": "uc",
+   "label": "UpdateUserUseCase",
+   "kind": "class",
+   "row": 0,
+   "col": 1,
+   "sublabel": "aplicación",
+   "attributes": [
+    {
+     "name": "userRepository",
+     "type": "UserRepositoryPort",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "command: UpdateUserCommand",
+     "returns": "Void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "port",
+   "label": "UserRepositoryPort",
+   "kind": "interface",
+   "row": 1,
+   "col": 1,
+   "sublabel": "puerto (abstracción)",
+   "methods": [
+    {
+     "name": "save",
+     "parameters": "user: User",
+     "returns": "User",
+     "visibility": "public",
+     "abstract": true
+    },
+    {
+     "name": "findById",
+     "parameters": "id: UserId",
+     "returns": "Optional<User>",
+     "visibility": "public",
+     "abstract": true
+    },
+    {
+     "name": "existsByEmail",
+     "parameters": "email: Email",
+     "returns": "boolean",
+     "visibility": "public",
+     "abstract": true
+    }
+   ]
+  },
+  {
+   "id": "mem",
+   "label": "InMemoryUserRepositoryAdapter",
+   "kind": "class",
+   "row": 2,
+   "col": 0,
+   "sublabel": "perfil memory"
+  },
+  {
+   "id": "jpa",
+   "label": "UserPersistenceAdapter",
+   "kind": "class",
+   "row": 2,
+   "col": 2,
+   "sublabel": "perfil jpa · MySQL",
+   "attributes": [
+    {
+     "name": "mapper",
+     "type": "UserPersistenceMapper",
+     "visibility": "private"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "from": "uc",
+   "to": "port",
+   "kind": "dependency",
+   "label": "depende de"
+  },
+  {
+   "from": "mem",
+   "to": "port",
+   "kind": "realization"
+  },
+  {
+   "from": "jpa",
+   "to": "port",
+   "kind": "realization"
+  }
+ ],
+ "schema_version": 1
+}

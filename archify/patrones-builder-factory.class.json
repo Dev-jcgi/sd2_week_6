@@ -1,0 +1,218 @@
+{
+ "diagram_type": "class",
+ "meta": {
+  "title": "Ejercicio · DESPUÉS: Builder + Factory",
+  "subtitle": "El Builder nombra cada dato; la Factory concentra cómo nace un usuario válido.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/patrones-builder-factory.html"
+ },
+ "layout": {
+  "mode": "grid"
+ },
+ "types": [
+  {
+   "id": "create",
+   "label": "CreateUserUseCase",
+   "kind": "class",
+   "row": 0,
+   "col": 0,
+   "sublabel": "solo orquesta",
+   "attributes": [
+    {
+     "name": "userFactory",
+     "type": "UserFactory",
+     "visibility": "private"
+    },
+    {
+     "name": "eventPublisher",
+     "type": "UserEventPublisher",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "command",
+     "returns": "UUID",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "loader",
+   "label": "SampleUsersLoader",
+   "kind": "class",
+   "row": 0,
+   "col": 2,
+   "sublabel": "una línea por usuario",
+   "attributes": [
+    {
+     "name": "userFactory",
+     "type": "UserFactory",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "load",
+     "parameters": "",
+     "returns": "void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "factory",
+   "label": "UserFactory",
+   "kind": "class",
+   "row": 1,
+   "col": 1,
+   "sublabel": "FACTORY",
+   "attributes": [
+    {
+     "name": "userRepository",
+     "type": "UserRepositoryPort",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "create",
+     "parameters": "command: CreateUserCommand",
+     "returns": "User",
+     "visibility": "public"
+    },
+    {
+     "name": "sample",
+     "parameters": "id, lastName, email, role, status",
+     "returns": "User",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "user",
+   "label": "User",
+   "kind": "class",
+   "row": 2,
+   "col": 0,
+   "sublabel": "agregado",
+   "methods": [
+    {
+     "name": "register",
+     "parameters": "…",
+     "returns": "User",
+     "visibility": "public",
+     "static": true
+    },
+    {
+     "name": "builder",
+     "parameters": "",
+     "returns": "User.Builder",
+     "visibility": "public",
+     "static": true
+    },
+    {
+     "name": "pullEvents",
+     "parameters": "",
+     "returns": "List<UserEvent>",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "builder",
+   "label": "User.Builder",
+   "kind": "class",
+   "row": 2,
+   "col": 2,
+   "sublabel": "BUILDER · valores por defecto",
+   "attributes": [
+    {
+     "name": "role",
+     "type": "UserRole = CUSTOMER",
+     "visibility": "private"
+    },
+    {
+     "name": "status",
+     "type": "UserStatus = ACTIVE",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "firstName",
+     "parameters": "String",
+     "returns": "Builder",
+     "visibility": "public"
+    },
+    {
+     "name": "email",
+     "parameters": "String",
+     "returns": "Builder",
+     "visibility": "public"
+    },
+    {
+     "name": "role",
+     "parameters": "UserRole",
+     "returns": "Builder",
+     "visibility": "public"
+    },
+    {
+     "name": "build",
+     "parameters": "",
+     "returns": "User",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "repo",
+   "label": "UserRepositoryPort",
+   "kind": "interface",
+   "row": 1,
+   "col": 3,
+   "sublabel": "existsByEmail"
+  }
+ ],
+ "relationships": [
+  {
+   "from": "create",
+   "to": "factory",
+   "kind": "association",
+   "label": "create(cmd)"
+  },
+  {
+   "from": "loader",
+   "to": "factory",
+   "kind": "association",
+   "label": "sample(…)"
+  },
+  {
+   "from": "factory",
+   "to": "repo",
+   "kind": "association",
+   "label": "¿correo repetido?"
+  },
+  {
+   "from": "factory",
+   "to": "user",
+   "kind": "dependency",
+   "label": "register"
+  },
+  {
+   "from": "factory",
+   "to": "builder",
+   "kind": "dependency",
+   "label": "sample usa"
+  },
+  {
+   "from": "builder",
+   "to": "user",
+   "kind": "dependency",
+   "label": "build()"
+  }
+ ],
+ "schema_version": 1
+}

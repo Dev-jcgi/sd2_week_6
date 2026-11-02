@@ -1,0 +1,284 @@
+{
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "C4 · Nivel 3 · Dentro de user-module",
+  "subtitle": "Arquitectura hexagonal: el dominio en el centro, los casos de uso alrededor y los adaptadores en el borde.",
+  "views": [
+   {
+    "id": "v1",
+    "label": "1 · Adaptadores de entrada",
+    "focus": [
+     "ui",
+     "contract"
+    ],
+    "note": "La UI JavaFX y el contrato UserService son dos formas de entrar al mismo caso de uso."
+   },
+   {
+    "id": "v2",
+    "label": "2 · Aplicación",
+    "focus": [
+     "usecases",
+     "ports"
+    ],
+    "note": "Un caso de uso por requerimiento funcional; dependen de puertos, no de bases de datos."
+   },
+   {
+    "id": "v3",
+    "label": "3 · Dominio",
+    "focus": [
+     "user"
+    ],
+    "note": "User, Email y UserId sin frameworks: las reglas viven aquí."
+   },
+   {
+    "id": "v4",
+    "label": "4 · Adaptadores de salida",
+    "focus": [
+     "mem",
+     "jpa",
+     "mysql"
+    ],
+    "note": "Memoria o JPA implementan el mismo UserRepositoryPort."
+   }
+  ],
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/c4-user-module.html"
+ },
+ "components": [
+  {
+   "id": "otros",
+   "type": "external",
+   "label": "Otros módulos",
+   "sublabel": "order, delivery, catalog…",
+   "pos": [
+    20,
+    60
+   ],
+   "size": [
+    170,
+    72
+   ]
+  },
+  {
+   "id": "ui",
+   "type": "frontend",
+   "label": "Controladores JavaFX",
+   "sublabel": "Create/Edit/ListUsersController",
+   "pos": [
+    250,
+    300
+   ],
+   "size": [
+    190,
+    72
+   ]
+  },
+  {
+   "id": "contract",
+   "type": "backend",
+   "label": "UserServiceAdapter",
+   "sublabel": "implementa UserService",
+   "pos": [
+    250,
+    60
+   ],
+   "size": [
+    190,
+    72
+   ]
+  },
+  {
+   "id": "usecases",
+   "type": "backend",
+   "label": "Casos de uso",
+   "sublabel": "Create · Update · List · Delete · CheckAccess",
+   "pos": [
+    500,
+    190
+   ],
+   "size": [
+    220,
+    84
+   ]
+  },
+  {
+   "id": "ports",
+   "type": "backend",
+   "label": "Puertos",
+   "sublabel": "commands/queries · UserRepositoryPort",
+   "pos": [
+    500,
+    380
+   ],
+   "size": [
+    220,
+    72
+   ]
+  },
+  {
+   "id": "user",
+   "type": "backend",
+   "label": "Dominio",
+   "sublabel": "User · Email · UserId · UserRole",
+   "pos": [
+    790,
+    190
+   ],
+   "size": [
+    200,
+    84
+   ]
+  },
+  {
+   "id": "mem",
+   "type": "database",
+   "label": "InMemoryUserRepositoryAdapter",
+   "sublabel": "perfil memory",
+   "pos": [
+    250,
+    580
+   ],
+   "size": [
+    210,
+    72
+   ]
+  },
+  {
+   "id": "jpa",
+   "type": "database",
+   "label": "UserPersistenceAdapter",
+   "sublabel": "JPA + mapper",
+   "pos": [
+    520,
+    580
+   ],
+   "size": [
+    190,
+    72
+   ],
+   "brand": "spring"
+  },
+  {
+   "id": "mysql",
+   "type": "database",
+   "label": "MySQL",
+   "sublabel": "tabla users",
+   "pos": [
+    800,
+    580
+   ],
+   "size": [
+    150,
+    72
+   ],
+   "brand": "mysql"
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "Adaptadores de entrada",
+   "wraps": [
+    "ui",
+    "contract"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Aplicación",
+   "wraps": [
+    "usecases",
+    "ports"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Dominio",
+   "wraps": [
+    "user"
+   ]
+  },
+  {
+   "kind": "region",
+   "label": "Adaptadores de salida",
+   "wraps": [
+    "mem",
+    "jpa"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "otros",
+   "to": "contract",
+   "label": "isActiveWithRole(id, roles)",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c2",
+   "from": "contract",
+   "to": "usecases",
+   "label": "CheckUserAccessQuery",
+   "variant": "emphasis"
+  },
+  {
+   "id": "c3",
+   "from": "ui",
+   "to": "usecases",
+   "label": "CreateUserCommand…"
+  },
+  {
+   "id": "c4",
+   "from": "usecases",
+   "to": "user",
+   "label": "register · updateProfile · deactivate"
+  },
+  {
+   "id": "c5",
+   "from": "usecases",
+   "to": "ports",
+   "label": "save · findById"
+  },
+  {
+   "id": "c6",
+   "from": "mem",
+   "to": "ports",
+   "label": "implementa",
+   "variant": "dashed"
+  },
+  {
+   "id": "c7",
+   "from": "jpa",
+   "to": "ports",
+   "label": "implementa",
+   "variant": "dashed"
+  },
+  {
+   "id": "c8",
+   "from": "jpa",
+   "to": "mysql",
+   "label": "JPA"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Dependencias hacia adentro",
+   "items": [
+    "Infraestructura → Aplicación → Dominio",
+    "El dominio no conoce Spring ni JavaFX"
+   ]
+  },
+  {
+   "dot": "cyan",
+   "title": "Puertos y adaptadores",
+   "items": [
+    "Puerto = interfaz que pide la aplicación",
+    "Adaptador = implementación concreta en el borde"
+   ]
+  }
+ ],
+ "schema_version": 1
+}

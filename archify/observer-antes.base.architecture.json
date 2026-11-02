@@ -1,0 +1,128 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "Observer · antes",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/observer-antes.html"
+ },
+ "components": [
+  {
+   "id": "ui",
+   "type": "frontend",
+   "label": "EditUserController",
+   "sublabel": "UI JavaFX",
+   "pos": [
+    40,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "uc",
+   "type": "backend",
+   "label": "UpdateUserUseCase",
+   "sublabel": "4 dependencias",
+   "pos": [
+    300,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "repo",
+   "type": "database",
+   "label": "UserRepositoryPort",
+   "sublabel": "memoria / MySQL",
+   "pos": [
+    300,
+    420
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "mail",
+   "type": "external",
+   "label": "EmailNotifier",
+   "sublabel": "correo",
+   "pos": [
+    620,
+    60
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "audit",
+   "type": "external",
+   "label": "AuditLog",
+   "sublabel": "auditoría",
+   "pos": [
+    620,
+    220
+   ],
+   "size": [
+    180,
+    72
+   ]
+  },
+  {
+   "id": "cour",
+   "type": "external",
+   "label": "CourierAssignmentReleaser",
+   "sublabel": "entregas",
+   "pos": [
+    620,
+    380
+   ],
+   "size": [
+    200,
+    72
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "c1",
+   "from": "ui",
+   "to": "uc",
+   "label": "execute"
+  },
+  {
+   "id": "c2",
+   "from": "uc",
+   "to": "repo",
+   "label": "save"
+  },
+  {
+   "id": "c3",
+   "from": "uc",
+   "to": "mail",
+   "label": "sendDeactivated"
+  },
+  {
+   "id": "c4",
+   "from": "uc",
+   "to": "audit",
+   "label": "record"
+  },
+  {
+   "id": "c5",
+   "from": "uc",
+   "to": "cour",
+   "label": "releaseAssignmentsOf"
+  }
+ ]
+}

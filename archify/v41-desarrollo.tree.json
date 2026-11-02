@@ -1,0 +1,96 @@
+{
+ "diagram_type": "tree",
+ "meta": {
+  "title": "4+1 · Vista de desarrollo",
+  "subtitle": "Cómo está organizado el código: proyectos Maven y capas hexagonales. Cada módulo depende solo de core-module.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/v41-desarrollo.html"
+ },
+ "nodes": [
+  {
+   "id": "capstone",
+   "label": "capstone (repo GitLab)",
+   "sublabel": "monolito modular · Maven"
+  },
+  {
+   "id": "core",
+   "label": "core-module",
+   "sublabel": "kernel compartido",
+   "parent": "capstone"
+  },
+  {
+   "id": "core_contract",
+   "label": "contract",
+   "sublabel": "UserService, OrderService…",
+   "parent": "core"
+  },
+  {
+   "id": "core_infra",
+   "label": "infrastructure",
+   "sublabel": "fallbacks · persistencia base · UI",
+   "parent": "core"
+  },
+  {
+   "id": "user",
+   "label": "user-module",
+   "sublabel": "módulo de referencia",
+   "parent": "capstone"
+  },
+  {
+   "id": "u_dom",
+   "label": "domain",
+   "sublabel": "model · exception",
+   "parent": "user"
+  },
+  {
+   "id": "u_app",
+   "label": "application",
+   "sublabel": "port/in · port/out · usecase",
+   "parent": "user"
+  },
+  {
+   "id": "u_inf",
+   "label": "infrastructure",
+   "sublabel": "adapter/in · adapter/out · config",
+   "parent": "user"
+  },
+  {
+   "id": "catalog",
+   "label": "catalog-module",
+   "sublabel": "equipo C",
+   "parent": "capstone"
+  },
+  {
+   "id": "order",
+   "label": "order-module",
+   "sublabel": "equipo B",
+   "parent": "capstone"
+  },
+  {
+   "id": "delivery",
+   "label": "delivery-module",
+   "sublabel": "equipo A",
+   "parent": "capstone"
+  },
+  {
+   "id": "payment",
+   "label": "payment-module",
+   "sublabel": "equipo D",
+   "parent": "capstone"
+  },
+  {
+   "id": "sys",
+   "label": "delivery-system",
+   "sublabel": "ensambla y ejecuta",
+   "parent": "capstone"
+  },
+  {
+   "id": "sys_compose",
+   "label": "docker-compose.yml",
+   "sublabel": "MySQL opcional",
+   "parent": "sys"
+  }
+ ],
+ "schema_version": 1
+}

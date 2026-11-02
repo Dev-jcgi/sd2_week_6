@@ -1,0 +1,261 @@
+{
+ "diagram_type": "class",
+ "meta": {
+  "title": "4+1 · Vista lógica",
+  "subtitle": "Las abstracciones clave del dominio por módulo. Entre módulos solo se guardan UUID: no hay referencias directas a clases de otro módulo.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/v41-logica.html"
+ },
+ "layout": {
+  "mode": "grid"
+ },
+ "types": [
+  {
+   "id": "user",
+   "label": "User",
+   "kind": "class",
+   "row": 1,
+   "col": 1.5,
+   "sublabel": "user-module",
+   "attributes": [
+    {
+     "name": "id",
+     "type": "UserId",
+     "visibility": "private"
+    },
+    {
+     "name": "role",
+     "type": "UserRole",
+     "visibility": "private"
+    },
+    {
+     "name": "status",
+     "type": "UserStatus",
+     "visibility": "private"
+    }
+   ]
+  },
+  {
+   "id": "commerce",
+   "label": "Commerce",
+   "kind": "class",
+   "row": 0,
+   "col": 0,
+   "sublabel": "catalog-module",
+   "attributes": [
+    {
+     "name": "merchantId",
+     "type": "UUID",
+     "visibility": "private"
+    },
+    {
+     "name": "enabled",
+     "type": "boolean",
+     "visibility": "private"
+    }
+   ]
+  },
+  {
+   "id": "product",
+   "label": "Product",
+   "kind": "class",
+   "row": 0,
+   "col": 1.5,
+   "sublabel": "catalog-module",
+   "attributes": [
+    {
+     "name": "price",
+     "type": "BigDecimal",
+     "visibility": "private"
+    },
+    {
+     "name": "stock",
+     "type": "int",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "reserveStock",
+     "parameters": "qty: int",
+     "returns": "void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "cart",
+   "label": "Cart",
+   "kind": "class",
+   "row": 1,
+   "col": 0,
+   "sublabel": "order-module (implementado)",
+   "attributes": [
+    {
+     "name": "customerId",
+     "type": "UUID",
+     "visibility": "private"
+    },
+    {
+     "name": "items",
+     "type": "List<CartItem>",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "add",
+     "parameters": "productId, qty",
+     "returns": "void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "order",
+   "label": "Order",
+   "kind": "class",
+   "row": 2,
+   "col": 0,
+   "sublabel": "order-module",
+   "attributes": [
+    {
+     "name": "status",
+     "type": "OrderStatus",
+     "visibility": "private"
+    },
+    {
+     "name": "shippingCost",
+     "type": "BigDecimal",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "cancel",
+     "parameters": "",
+     "returns": "void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "payment",
+   "label": "Payment",
+   "kind": "class",
+   "row": 2,
+   "col": 1.5,
+   "sublabel": "payment-module",
+   "attributes": [
+    {
+     "name": "orderId",
+     "type": "UUID",
+     "visibility": "private"
+    },
+    {
+     "name": "amount",
+     "type": "BigDecimal",
+     "visibility": "private"
+    }
+   ]
+  },
+  {
+   "id": "delivery",
+   "label": "Delivery",
+   "kind": "class",
+   "row": 1,
+   "col": 3,
+   "sublabel": "delivery-module",
+   "attributes": [
+    {
+     "name": "orderId",
+     "type": "UUID",
+     "visibility": "private"
+    },
+    {
+     "name": "courierId",
+     "type": "UUID",
+     "visibility": "private"
+    },
+    {
+     "name": "code",
+     "type": "String",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "advance",
+     "parameters": "code: String",
+     "returns": "void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "ready",
+   "label": "ReadyOrder",
+   "kind": "record",
+   "row": 2,
+   "col": 3,
+   "sublabel": "core-module · contrato",
+   "attributes": [
+    {
+     "name": "orderId",
+     "type": "UUID",
+     "visibility": "private"
+    },
+    {
+     "name": "shippingCost",
+     "type": "BigDecimal",
+     "visibility": "private"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "from": "cart",
+   "to": "user",
+   "kind": "association",
+   "label": "customerId: UUID"
+  },
+  {
+   "from": "commerce",
+   "to": "user",
+   "kind": "association",
+   "label": "merchantId"
+  },
+  {
+   "from": "product",
+   "to": "commerce",
+   "kind": "aggregation"
+  },
+  {
+   "from": "order",
+   "to": "cart",
+   "kind": "dependency",
+   "label": "se crea desde"
+  },
+  {
+   "from": "payment",
+   "to": "order",
+   "kind": "association",
+   "label": "orderId"
+  },
+  {
+   "from": "delivery",
+   "to": "ready",
+   "kind": "dependency",
+   "label": "usa"
+  },
+  {
+   "from": "delivery",
+   "to": "user",
+   "kind": "association",
+   "label": "courierId"
+  }
+ ],
+ "schema_version": 1
+}

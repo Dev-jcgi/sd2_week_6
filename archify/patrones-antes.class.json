@@ -1,0 +1,200 @@
+{
+ "diagram_type": "class",
+ "meta": {
+  "title": "Ejercicio · ANTES: los olores de diseño",
+  "subtitle": "restore() con 9 parámetros, creación dentro del caso de uso y un caso de uso atado a tres servicios concretos.",
+  "locale": "es",
+  "quality_profile": "showcase",
+  "output": "public/diagramas/patrones-antes.html"
+ },
+ "layout": {
+  "mode": "grid"
+ },
+ "types": [
+  {
+   "id": "create",
+   "label": "CreateUserUseCase",
+   "kind": "class",
+   "row": 0,
+   "col": 0,
+   "sublabel": "crea y avisa",
+   "attributes": [
+    {
+     "name": "userRepository",
+     "type": "UserRepositoryPort",
+     "visibility": "private"
+    },
+    {
+     "name": "emailNotifier",
+     "type": "EmailNotifier",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "command",
+     "returns": "UUID",
+     "visibility": "public"
+    },
+    {
+     "name": "newModel",
+     "parameters": "command",
+     "returns": "User",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "update",
+   "label": "UpdateUserUseCase",
+   "kind": "class",
+   "row": 0,
+   "col": 2,
+   "sublabel": "4 dependencias",
+   "attributes": [
+    {
+     "name": "userRepository",
+     "type": "UserRepositoryPort",
+     "visibility": "private"
+    },
+    {
+     "name": "emailNotifier",
+     "type": "EmailNotifier",
+     "visibility": "private"
+    },
+    {
+     "name": "auditLog",
+     "type": "AuditLog",
+     "visibility": "private"
+    },
+    {
+     "name": "courierReleaser",
+     "type": "CourierAssignmentReleaser",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "execute",
+     "parameters": "command",
+     "returns": "Void",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "user",
+   "label": "User",
+   "kind": "class",
+   "row": 1,
+   "col": 0,
+   "sublabel": "agregado",
+   "methods": [
+    {
+     "name": "register",
+     "parameters": "5 parámetros",
+     "returns": "User",
+     "visibility": "public",
+     "static": true
+    },
+    {
+     "name": "restore",
+     "parameters": "9 parámetros (3 String, 2 Instant)",
+     "returns": "User",
+     "visibility": "public",
+     "static": true
+    }
+   ]
+  },
+  {
+   "id": "loader",
+   "label": "SampleUsersLoader",
+   "kind": "class",
+   "row": 1,
+   "col": 1,
+   "sublabel": "5 llamadas a restore(…, null, …)"
+  },
+  {
+   "id": "mail",
+   "label": "EmailNotifier",
+   "kind": "class",
+   "row": 1,
+   "col": 2,
+   "sublabel": "infraestructura"
+  },
+  {
+   "id": "audit",
+   "label": "AuditLog",
+   "kind": "class",
+   "row": 1,
+   "col": 3,
+   "sublabel": "infraestructura"
+  },
+  {
+   "id": "courier",
+   "label": "CourierAssignmentReleaser",
+   "kind": "class",
+   "row": 2,
+   "col": 2.5,
+   "sublabel": "\"módulo de entregas\""
+  },
+  {
+   "id": "repo",
+   "label": "UserRepositoryPort",
+   "kind": "interface",
+   "row": 2,
+   "col": 0,
+   "sublabel": "puerto"
+  }
+ ],
+ "relationships": [
+  {
+   "from": "create",
+   "to": "repo",
+   "kind": "association"
+  },
+  {
+   "from": "create",
+   "to": "mail",
+   "kind": "association",
+   "label": "llama"
+  },
+  {
+   "from": "update",
+   "to": "mail",
+   "kind": "association",
+   "label": "llama"
+  },
+  {
+   "from": "update",
+   "to": "audit",
+   "kind": "association",
+   "label": "llama"
+  },
+  {
+   "from": "update",
+   "to": "courier",
+   "kind": "association",
+   "label": "llama"
+  },
+  {
+   "from": "update",
+   "to": "repo",
+   "kind": "association"
+  },
+  {
+   "from": "loader",
+   "to": "user",
+   "kind": "dependency",
+   "label": "restore ×5"
+  },
+  {
+   "from": "create",
+   "to": "user",
+   "kind": "dependency",
+   "label": "register"
+  }
+ ],
+ "schema_version": 1
+}
